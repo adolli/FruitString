@@ -12,14 +12,14 @@ int main()
 {
 	std::cout << "hello world!" << std::endl;
 
-	int iarray[] = { 1, 2, 3, 4, 5, 6, 0 };
+	int iarray[] = { 1, 2, 3, 4, 5, 6, 0 } ;
 	i_string str0 = iarray;
 	assert(str0 == iarray);
 	str0.append(4, 2);
 	std::cout<<str0.at(0)<<std::endl;
 	if (str0[7] == 2)
 	{
-		std::cout<<"yes\n";
+		std::cout<<str0<<std::endl;
 	}
 
 	cd_string test;
