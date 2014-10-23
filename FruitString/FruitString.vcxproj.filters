@@ -20,7 +20,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FruitString.h">
+    <ClInclude Include="FruitString.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicStringStorage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CaseDependentString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CaseIndependentString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CharTraits.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegerString.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

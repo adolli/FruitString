@@ -1,26 +1,23 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "FruitString.hpp"
-using adolli::string;
-using adolli::NormalCharTraits;
-using adolli::CICharTraits;
-using adolli::IntCharTraits;
-
+#include <cassert>
+#include "CaseDependentString.h"
+#include "CaseIndependentString.h"
+#include "IntegerString.h"
+using namespace adolli;
 
 
 int main()
 {
 	std::cout << "hello world!" << std::endl;
 
-	typedef string<char, NormalCharTraits> cd_string;
-	typedef string<char, CICharTraits> ci_string;
-	typedef string<int, IntCharTraits> ii_string;
-
-	ii_string str0;
-	str0.append(1, 1);
+	int iarray[] = { 1, 2, 3, 4, 5, 6, 0 };
+	i_string str0 = iarray;
+	assert(str0 == iarray);
+	str0.append(4, 2);
 	std::cout<<str0.at(0)<<std::endl;
-	if (str0[0] == 1)
+	if (str0[7] == 2)
 	{
 		std::cout<<"yes\n";
 	}

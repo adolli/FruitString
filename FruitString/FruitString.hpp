@@ -5,163 +5,11 @@
 namespace adolli
 {
 
-	template< class T >
-	class StringStoragePolicy
-	{
-	public:
-		
-		typedef unsigned int size_type;
-		typedef int pos_type;
-
-		StringStoragePolicy()
-			: size_(0)
-		{
-			data_ = new T[1];
-			data_[0] = T(0);
-		}
-
-		StringStoragePolicy(const T* data, int len)
-			: size_(len)
-		{
-			data_ = new T[len + 1];
-			memcpy(data_, data, sizeof(T) * size_);
-			data_[size_] = T(0);
-		}
-		StringStoragePolicy(const T c)
-			: size_(1)
-		{
-			data_ = new T[2];
-			data_[0] = c;
-			data_[1] = T(0);
-		}
-		StringStoragePolicy(const StringStoragePolicy& rhs)
-			: size_(rhs.size_)
-		{
-			data_ = new T[size_ + 1];
-			memcpy(data_, rhs.data_, sizeof(T) * size_);
-			data_[size_] = T(0);
-		}
-
-		~StringStoragePolicy()
-		{
-			delete [] data_;
-		}
-
-		StringStoragePolicy& operator=(const StringStoragePolicy& rhs)
-		{
-			if (&rhs == this)
-			{
-				return *this;
-			}
-
-			delete [] data_;
-			*this = StringStoragePolicy(rhs);
-			return *this;
-		}
-
-
-		void Clear()
-		{
-			delete [] data_;
-		}
-
-
-	
-		StringStoragePolicy& Reserve(size_type n)
-		{
-			size_type oriSize = size_;
-			size_ += n;
-			T* newData = new T[size_ + 1];
-			memcpy(newData, data_, oriSize + 1);
-			delete [] data_;
-			data_ = newData;
-			return *this;
-		}
-		
-
-		T& Get(pos_type n) const
-		{
-			return data_[n];
-		}
-
-
-		size_type Size() const
-		{
-			return size_;
-		}
-
-
-
-	protected:	
-		
-		size_type size_;	// 不包含最后一个终结符号
-		T* data_;
-
-	};
-
-
-	class IntCharTraits
-	{
-	public:
-
-		static const int TERMINATOR = 0;
-		static const int UNIT_LENGTH = 1; 
-
-		static bool lt(const int c1, const int c2)
-		{
-			return c1 < c2;
-		}
-
-		static bool eq(const int c1, const int c2)
-		{
-			return c1 == c2;
-		}
-
-	};
-
-	class NormalCharTraits
-	{
-	public:
-
-		static const char TERMINATOR = '\0';
-		static const int UNIT_LENGTH = 1; 
-
-		static bool lt(const char c1, const char c2)
-		{
-			return c1 < c2;
-		}
-
-		static bool eq(const char c1, const char c2)
-		{
-			return c1 == c2;
-		}
-
-	};
-
-	class CICharTraits
-	{
-	public:
-
-		static const char TERMINATOR = '\0';
-		static const int UNIT_LENGTH = 1; 
-
-		static bool lt(const char c1, const char c2)
-		{
-			return toupper(c1) < toupper(c2);
-		}
-
-		static bool eq(const char c1, const char c2)
-		{
-			return toupper(c1) == toupper(c2);
-		}
-
-	};
-
 
 	template< 
 		class _CharT, 
 		class _CharTraits, 
-		template <class> class StoragePolicy = StringStoragePolicy > 
+		template <class> class StoragePolicy > 
 	class string
 		: protected StoragePolicy<_CharT>
 	{
@@ -186,7 +34,7 @@ namespace adolli
 		{}
 
 		string(const CharT* str)
-			: StoragePolicy<CharT>(str, strlen(str))
+			: StoragePolicy<CharT>(str, CharTraits::GetLenth(str))
 		{}
 
 		string(const CharT* str, int len)
@@ -234,7 +82,7 @@ namespace adolli
 		RefType append(ConstRawArrayType str)
 		{
 			size_type oriSize = Length();
-			size_type appendSize = strlen(str);
+			size_type appendSize = CharTraits::GetLenth(str);
 			Reserve(appendSize);
 			memcpy(data_ + oriSize, str, appendSize + 1);
 			return *this;
@@ -353,6 +201,23 @@ namespace adolli
 	}
 
 
+	template< class StringType >
+	bool operator!=(const StringType& s1, const StringType& s2)
+	{
+		return !operator==(s1, s2);
+	}
+
+	template< class StringType >
+	bool operator!=(typename StringType::ConstRawArrayType s1, const StringType& s2)
+	{
+		return !operator==(s1, s2);
+	}
+
+	template< class StringType >
+	bool operator!=(const StringType& s1, typename StringType::ConstRawArrayType s2)
+	{
+		return !operator==(s1, s2);
+	}
 
 
 }
