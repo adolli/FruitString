@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "adolli_string.h"
+#include "FruitString.hpp"
 using adolli::string;
 using adolli::NormalCharTraits;
 using adolli::CICharTraits;
