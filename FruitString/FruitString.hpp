@@ -1,7 +1,7 @@
 
 #ifndef _ADOLLI_STRING_
 #define _ADOLLI_STRING_
-
+#include<ostream>
 namespace adolli
 {
 
@@ -110,6 +110,7 @@ namespace adolli
 		}
 
 
+		
 
 
 		template< class StringType_OrRawStringType >
@@ -219,7 +220,19 @@ namespace adolli
 		return !operator==(s1, s2);
 	}
 
-
+	
+	template< 
+		class _CharT, 
+		class _CharTraits, 
+		template <class> class StoragePolicy > 
+	std::ostream & operator<<(std::ostream & os, string<_CharT, _CharTraits, StoragePolicy> s)
+	{
+		for (int i=0;i<s.Length();i++)
+		{
+			os<<s[i];
+		}
+		return os;
+	}
 }
 
 #endif  /*_ADOLLI_STRING_*/
