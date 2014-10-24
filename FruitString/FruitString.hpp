@@ -1,7 +1,9 @@
 
 #ifndef _ADOLLI_STRING_
 #define _ADOLLI_STRING_
+
 #include<ostream>
+
 namespace adolli
 {
 
@@ -29,27 +31,39 @@ namespace adolli
 		typedef const CharT& ConstCharRefType;
 
 
+		// 所有的构造函数中，最后总是加上终结符号
 		string()
 			: StoragePolicy<CharT>()
-		{}
+		{
+			at(Length()) = CharTraits::TERMINATOR;
+		}
 
 		string(const CharT* str)
 			: StoragePolicy<CharT>(str, CharTraits::GetLenth(str))
-		{}
+		{
+			at(Length()) = CharTraits::TERMINATOR;
+		}
 
 		string(const CharT* str, int len)
 			: StoragePolicy<CharT>(str, len)
-		{}
+		{
+			at(Length()) = CharTraits::TERMINATOR;
+		}
 
 		string(const CharT c)
 			: StoragePolicy<CharT>(c)
-		{}
+		{
+			at(Length()) = CharTraits::TERMINATOR;
+		}
 
 		string(const string& rhs)
 			: StoragePolicy<CharT>(rhs)
-		{}
+		{
+			at(Length()) = CharTraits::TERMINATOR;
+		}
 
 		using StoragePolicy<CharT>::operator=;
+
 
 
 		size_type Length() const
@@ -227,9 +241,10 @@ namespace adolli
 		template <class> class StoragePolicy > 
 	std::ostream & operator<<(std::ostream & os, string<_CharT, _CharTraits, StoragePolicy> s)
 	{
-		for (int i=0;i<s.Length();i++)
+		typedef typename string<_CharT, _CharTraits, StoragePolicy>::size_type size_type;
+		for (size_type i = 0; i < s.Length(); ++i)
 		{
-			os<<s[i];
+			os << s[i];
 		}
 		return os;
 	}

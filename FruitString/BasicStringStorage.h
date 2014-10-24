@@ -7,6 +7,11 @@ namespace adolli
 {
 
 
+	/**
+	 * 串线性存储策略
+	 * 使用一维数组连续存储，并预留到串长度+1大小，最后一位用于存放终结符号
+	 * 终结符号由string类进行添加和管理，该StoragePolicy只负责空间分配
+	 */
 	template< class T >
 	class StringStoragePolicy
 	{
@@ -19,7 +24,6 @@ namespace adolli
 			: size_(0)
 		{
 			data_ = new T[1];
-			data_[0] = T(0);
 		}
 
 		StringStoragePolicy(const T* data, int len)
@@ -27,21 +31,18 @@ namespace adolli
 		{
 			data_ = new T[len + 1];
 			memcpy(data_, data, sizeof(T) * size_);
-			data_[size_] = T(0);
 		}
 		StringStoragePolicy(const T c)
 			: size_(1)
 		{
 			data_ = new T[2];
 			data_[0] = c;
-			data_[1] = T(0);
 		}
 		StringStoragePolicy(const StringStoragePolicy& rhs)
 			: size_(rhs.size_)
 		{
 			data_ = new T[size_ + 1];
 			memcpy(data_, rhs.data_, sizeof(T) * size_);
-			data_[size_] = T(0);
 		}
 
 		~StringStoragePolicy()
@@ -57,7 +58,7 @@ namespace adolli
 			}
 
 			delete [] data_;
-			*this = StringStoragePolicy(rhs);
+			StringStoragePolicy(rhs);
 			return *this;
 		}
 
